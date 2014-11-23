@@ -1,0 +1,4 @@
+my_app_messagerie:
+    resource: "@MyAppMessagerieBundle/Resources/config/routing.yml"
+    prefix:   /
+

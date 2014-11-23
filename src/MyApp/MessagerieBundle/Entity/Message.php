@@ -1,0 +1,32 @@
+<?php
+namespace MyApp\MessagerieBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity
+ */
+class Message 
+{
+    /**
+     * @ORM\GeneratedValue
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    
+    /**
+     * @ORM\Column(type="string",length="255")
+     * @Assert\NotBlank()
+     * @Assert\MinLength(3)
+     */    
+    private $objet;
+    
+    /**
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     * @Assert\MinLength(3)
+     */    
+    private $contenu;
+
+}

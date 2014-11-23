@@ -1,0 +1,17 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: choisir-db
+    database_user: choisir-user
+    database_password: choisir-password
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: 7cb0ca32e0861c72bae32fc396c1dda10
+    debug_toolbar: true
+    debug_redirects: false
+    use_assetic_controller: true
