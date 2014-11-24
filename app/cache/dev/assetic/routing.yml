@@ -2,4 +2,4 @@ _assetic:
     resource: .
     type: assetic
 _app:
-    resource: /var/www/html/dev/eXtremProgramming/eXtremeprogramming/app/config/routing_dev.yml
+    resource: /var/www/html/dev/transferFiles/app/config/routing_dev.yml

@@ -123,8 +123,12 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // my_app_messagerie_homepage
-        if (0 === strpos($pathinfo, '/myapp/hello') && preg_match('#^/myapp/hello/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'my_app_messagerie_homepage')), array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\DefaultController::indexAction',));
+        if (rtrim($pathinfo, '/') === '/myapp/he') {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', 'my_app_messagerie_homepage');
+            }
+
+            return array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\DefaultController::indexAction',  '_route' => 'my_app_messagerie_homepage',);
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

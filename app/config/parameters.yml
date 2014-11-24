@@ -3,9 +3,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: 127.0.0.1
     database_port: null
-    database_name: choisir-db
-    database_user: choisir-user
-    database_password: choisir-password
+    database_name: messagerie   
+    database_user: root
+    database_password: mdpJK32
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
