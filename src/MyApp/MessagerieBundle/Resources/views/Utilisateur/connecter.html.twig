@@ -8,6 +8,8 @@
 {% if message %}
 <p>{{ message }}</p>
 	{% if user != 0 %}
-	<a href="{{ path('my_app_messagerie_envoyer', { 'id': user }) }}">Envoyer un message</a>
+	<a href="{{ path('my_app_messagerie_envoyer', { 'id': user }) }}">Envoyer un message</a><br>
+	<a href="{{ path('my_app_messagerie_listerenvoyes', { 'id': user }) }}">Liste des messages envoyés</a><br>
+	<a href="{{ path('my_app_messagerie_listerrecus', { 'id': user }) }}">Liste des messages reçus</a>
 	{% endif %}
 {% endif %}

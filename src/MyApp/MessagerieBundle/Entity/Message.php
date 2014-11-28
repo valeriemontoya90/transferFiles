@@ -29,13 +29,13 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity="MyApp\MessagerieBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
-     */    
+     */
     private $expediteur;
 
     /**
      * @ORM\Column(type="string",length=255)
      * @Assert\NotBlank()
-     */    
+     */
     private $destinataire;
 
     /**
@@ -166,5 +166,35 @@ class Message
     public function getDestinataireInconnu()
     {
         return $this->destinataireInconnu;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->destinataire = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add destinataire
+     *
+     * @param \MyApp\MessagerieBundle\Entity\User $destinataire
+     * @return Message
+     */
+    public function addDestinataire(\MyApp\MessagerieBundle\Entity\User $destinataire)
+    {
+        $this->destinataire[] = $destinataire;
+
+        return $this;
+    }
+
+    /**
+     * Remove destinataire
+     *
+     * @param \MyApp\MessagerieBundle\Entity\User $destinataire
+     */
+    public function removeDestinataire(\MyApp\MessagerieBundle\Entity\User $destinataire)
+    {
+        $this->destinataire->removeElement($destinataire);
     }
 }

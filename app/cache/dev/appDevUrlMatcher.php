@@ -141,11 +141,6 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::ajouterAction',  '_route' => 'my_app_messagerie_ajouter',);
             }
 
-            // my_app_messagerie_envoyer
-            if (0 === strpos($pathinfo, '/myapp/envoyer') && preg_match('#^/myapp/envoyer/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'my_app_messagerie_envoyer')), array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::envoyerAction',));
-            }
-
             // my_app_messagerie_connecter
             if (rtrim($pathinfo, '/') === '/myapp/connecter') {
                 if (substr($pathinfo, -1) !== '/') {
@@ -153,6 +148,24 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 }
 
                 return array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::connecterAction',  '_route' => 'my_app_messagerie_connecter',);
+            }
+
+            // my_app_messagerie_envoyer
+            if (0 === strpos($pathinfo, '/myapp/envoyer') && preg_match('#^/myapp/envoyer/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'my_app_messagerie_envoyer')), array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::envoyerAction',));
+            }
+
+            if (0 === strpos($pathinfo, '/myapp/lister')) {
+                // my_app_messagerie_listerenvoyes
+                if (0 === strpos($pathinfo, '/myapp/listerenvoyes') && preg_match('#^/myapp/listerenvoyes/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'my_app_messagerie_listerenvoyes')), array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::listermessagesenvoyesAction',));
+                }
+
+                // my_app_messagerie_listerrecus
+                if (0 === strpos($pathinfo, '/myapp/listerrecus') && preg_match('#^/myapp/listerrecus/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'my_app_messagerie_listerrecus')), array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::listermessagesrecusAction',));
+                }
+
             }
 
         }

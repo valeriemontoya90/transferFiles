@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class User 
+class User
 {
     /**
      * @ORM\GeneratedValue
@@ -38,14 +38,15 @@ class User
     private $nbFilleuil;
 
     /**
+     * @ORM\Column(type="boolean")
+     */    
+    private $estInconnu;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Fichier")
      */    
     private $fichier;
     
-    /**
-     * @ORM\ManyToMany(targetEntity="DestinataireInconnu")
-     */    
-    private $destinataireInconnu;
     /**
      * Constructor
      */
@@ -292,5 +293,28 @@ class User
     public function getDestinataireInconnu()
     {
         return $this->destinataireInconnu;
+    }
+
+    /**
+     * Set estInconnu
+     *
+     * @param boolean $estInconnu
+     * @return User
+     */
+    public function setEstInconnu($estInconnu)
+    {
+        $this->estInconnu = $estInconnu;
+
+        return $this;
+    }
+
+    /**
+     * Get estInconnu
+     *
+     * @return boolean 
+     */
+    public function getEstInconnu()
+    {
+        return $this->estInconnu;
     }
 }

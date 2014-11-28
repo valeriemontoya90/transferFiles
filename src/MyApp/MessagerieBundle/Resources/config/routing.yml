@@ -6,10 +6,18 @@ my_app_messagerie_ajouter:
     path: /ajouter/
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:ajouter }
 
+my_app_messagerie_connecter:
+    path: /connecter/
+    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:connecter }
+
 my_app_messagerie_envoyer:
     path: /envoyer/{id}
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:envoyer }
 
-my_app_messagerie_connecter:
-    path: /connecter/
-    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:connecter }
+my_app_messagerie_listerenvoyes:
+    path: /listerenvoyes/{id}
+    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:listermessagesenvoyes }
+
+my_app_messagerie_listerrecus:
+    path: /listerrecus/{id}
+    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:listermessagesrecus }
