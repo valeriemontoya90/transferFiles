@@ -12,6 +12,7 @@ class MessageForm extends AbstractType {
             ->add("destinataire", 'text', array('required' => true))
             ->add("objet", 'text', array('required' => true))
             ->add("contenu", 'text', array('required' => true))
+            ->add('fichier', 'file')
         ;
     }
 

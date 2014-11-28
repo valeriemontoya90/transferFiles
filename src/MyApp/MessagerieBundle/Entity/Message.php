@@ -44,6 +44,11 @@ class Message
     private $destinataireInconnu;
 
     /**
+     * @ORM\Column(type="integer",length=255)
+     */    
+    private $fichier;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -196,5 +201,28 @@ class Message
     public function removeDestinataire(\MyApp\MessagerieBundle\Entity\User $destinataire)
     {
         $this->destinataire->removeElement($destinataire);
+    }
+
+    /**
+     * Set fichier
+     *
+     * @param string $fichier
+     * @return Message
+     */
+    public function setFichier($fichier)
+    {
+        $this->fichier = $fichier;
+
+        return $this;
+    }
+
+    /**
+     * Get fichier
+     *
+     * @return string 
+     */
+    public function getFichier()
+    {
+        return $this->fichier;
     }
 }

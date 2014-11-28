@@ -6,10 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use MyApp\MessagerieBundle\Entity\User;
 use MyApp\MessagerieBundle\Entity\Message;
+use MyApp\MessagerieBundle\Entity\Fichier;
 use MyApp\MessagerieBundle\Entity\DestinataireInconnu;
 use MyApp\MessagerieBundle\Form\UserForm;
 use MyApp\MessagerieBundle\Form\MessageForm;
 use MyApp\MessagerieBundle\Form\ConnexionForm;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UtilisateurController extends Controller
 {
@@ -122,6 +124,7 @@ class UtilisateurController extends Controller
         		$destinataire_obj = $em->getRepository('MyAppMessagerieBundle:User')->findOneBy(array('mail' => $destinataire));
         		$destinataire_mail = "";
         		
+        		//Si l'utilisateur est un membre
         		if ($destinataire_obj != null) {
         			$destinataire_mail = $destinataire_obj->getMail();
         			//var_dump($destinataire_id);
@@ -129,15 +132,17 @@ class UtilisateurController extends Controller
         			$message->setDestinataireInconnu(false);
         			$information = "destinataire connu";
         		} else {
+        			//Si l'utilisateur n'est pas un membre.
         			$message->setDestinataireInconnu(true);
         			
-        			//var_dump($destinataire);
+        			//On le recherche parmi "les destinataires inconnus"
         			$destinataire_autres = $em->getRepository('MyAppMessagerieBundle:DestinataireInconnu')->findOneBy(array('mail' => $destinataire));
         			//var_dump($destinataire_autres);
         			if ($destinataire_autres != null) {
         				$destinataire_mail = $destinataire_autres->getMail();
         				$message->setDestinataire($destinataire_mail);
         			} else {
+        				//Si on ne le retrouve pas on l'enregistre dans la table "destinataire inconnu"
 						$destinaireInconnu = new DestinataireInconnu();
 						$destinaireInconnu->setMail($destinataire);
         				$message->setDestinataire($destinataire_mail);
@@ -147,6 +152,23 @@ class UtilisateurController extends Controller
         			}
         		}
 
+        		//Enregistrement d'une éventuelle pièce jointe
+        		//var_dump($message->getFichier());
+        		$fichier_obj = $message->getFichier();
+        		var_dump($message->getFichier()->getSize());
+        		$file = new Fichier();
+        		$file->setNom($message->getFichier()->getClientOriginalName());
+        		$file->setPoids($message->getFichier()->getSize());
+        		$file->setMimeType($message->getFichier()->getMimeType());
+        		$file->setMotDePasse("");
+        		$file->setPerennite("");
+        		$file->setNbDeTelechargement("");
+        		$em->persist($file);
+        		$em->flush();
+        		$file_id = $em->getRepository('MyAppMessagerieBundle:Fichier')->findOneBy(array('nom' => $message->getFichier()->getClientOriginalName()));
+				$message->setFichier($file_id->getId());
+
+        		//Enregistrement du message
         		$em->persist($message);
         		$em->flush();
         		$information = "Message envoyé avec succès !";		

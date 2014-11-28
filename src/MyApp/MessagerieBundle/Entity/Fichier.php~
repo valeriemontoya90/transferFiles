@@ -21,11 +21,21 @@ class Fichier
      * @Assert\NotBlank()
      */    
     private $nom;
+
+    /**
+     * @ORM\Column(type="integer",length=255)
+     * @Assert\NotBlank()
+     */    
+    private $poids;
     
     /**
      * @ORM\Column(type="string",length=255)
      * @Assert\NotBlank()
-     * @Assert\Length(min=3)
+     */    
+    private $mimeType;
+    
+    /**
+     * @ORM\Column(type="string",length=255)
      */    
     private $motDePasse;
     
@@ -140,5 +150,51 @@ class Fichier
     public function getNbDeTelechargement()
     {
         return $this->nbDeTelechargement;
+    }
+
+    /**
+     * Set poids
+     *
+     * @param string $poids
+     * @return Fichier
+     */
+    public function setPoids($poids)
+    {
+        $this->poids = $poids;
+
+        return $this;
+    }
+
+    /**
+     * Get poids
+     *
+     * @return string 
+     */
+    public function getPoids()
+    {
+        return $this->poids;
+    }
+
+    /**
+     * Set mimeType
+     *
+     * @param string $mimeType
+     * @return Fichier
+     */
+    public function setMimeType($mimeType)
+    {
+        $this->mimeType = $mimeType;
+
+        return $this;
+    }
+
+    /**
+     * Get mimeType
+     *
+     * @return string 
+     */
+    public function getMimeType()
+    {
+        return $this->mimeType;
     }
 }
