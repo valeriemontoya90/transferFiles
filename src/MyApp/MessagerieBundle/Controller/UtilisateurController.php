@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use MyApp\MessagerieBundle\Entity\User;
 use MyApp\MessagerieBundle\Entity\Message;
+use MyApp\MessagerieBundle\Entity\DestinataireInconnu;
 use MyApp\MessagerieBundle\Form\UserForm;
 use MyApp\MessagerieBundle\Form\MessageForm;
 use MyApp\MessagerieBundle\Form\ConnexionForm;
@@ -117,14 +118,16 @@ class UtilisateurController extends Controller
     public function envoyerAction($id = null) {
     	$information = '';
 
-        $messag = new Message();
+        $message = new Message();
         
         $em = $this->container->get('doctrine')->getEntityManager();
         $user = $em->getRepository('MyAppMessagerieBundle:User')->findOneBy(array('id' => $id));
+        //var_dump($user);
 
         $form = $this->container
         	->get('form.factory')
-        	->create(new MessageForm(), $messag);
+        	->create(new MessageForm(), $message);
+        //var_dump($message->setExpediteur($user));
 
         $request = $this->container->get('request');
 
@@ -132,10 +135,47 @@ class UtilisateurController extends Controller
         	$form->bind($request);
 
         	if ($form->isValid()) {
-        		$messag->setUser($user);
+        		$message->setExpediteur($user);
         		$em = $this->container->get('doctrine')->getEntityManager();
 
-        		$em->persist($messag);
+        		$destinataire = $message->getDestinataire();
+        		//var_dump($destinataire);
+        		//var_dump($message->getDestinataire());
+        		//$destinataire_obj = null;
+        		$destinataire_obj = $em->getRepository('MyAppMessagerieBundle:User')->findOneBy(array('mail' => $destinataire));
+        		$destinataire_id = "";
+        		
+        		if ($destinataire_obj != null) {
+        			$destinataire_id = $destinataire_obj->getId();
+        			//var_dump($destinataire_id);
+        			$message->setDestinataire($destinataire_id);
+        			$message->setDestinataireInconnu(false);
+        			$information = "destinataire connu";
+        		} else {
+        			$message->setDestinataireInconnu(true);
+        			$information = "Destinataire non trouvé parmi les users\n";	
+        			$information .= "Cherchons parmi les destinataire inconnu\n";	
+        			
+					//$em1 = $this->container->get('doctrine')->getEntityManager();
+        			//var_dump($destinataire);
+        			$destinataire_autres = $em->getRepository('MyAppMessagerieBundle:DestinataireInconnu')->findOneBy(array('mail' => $destinataire));
+        			//var_dump($destinataire_autres);
+        			if ($destinataire_autres != null) {
+        				$destinataire_id = $destinataire_autres->getId();
+        				$message->setDestinataire($destinataire_id);
+        				//$information .= "Trouvé et ajouté dans le message";
+        			} else {
+						$destinaireInconnu = new DestinataireInconnu();
+						$destinaireInconnu->setMail($destinataire);
+        				$message->setDestinataire($destinataire_id);
+        				$em->persist($message);
+						$em->persist($destinaireInconnu);
+						$em->flush();
+        				//$information .= "Créé et ajouté dans le message";	
+        			}
+        		}
+
+        		$em->persist($message);
         		$em->flush();
         		$information = "Message envoyé avec succès !";		
         	}

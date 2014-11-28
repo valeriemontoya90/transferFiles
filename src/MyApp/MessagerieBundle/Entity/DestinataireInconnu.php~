@@ -16,7 +16,7 @@ class DestinataireInconnu
     private $id;
     
     /**
-     * @ORM\Column(type="integer",length=11)
+     * @ORM\Column(type="string",length=11)
      * @Assert\NotBlank()
      */    
     private $mail;

@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class MessageForm extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
+            ->add("destinataire", 'text', array('required' => true))
             ->add("objet", 'text', array('required' => true))
             ->add("contenu", 'text', array('required' => true))
         ;
