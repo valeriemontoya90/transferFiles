@@ -1,0 +1,12 @@
+<h1>Envoyer un message</h1>
+
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
+
+<form action="" method="post" {{ form_enctype(form)}}>
+	{{ form_widget(form) }}
+	<input type="submit"/>
+</form>
+
+<p><a href="{{ path('my_app_messagerie_index') }}">Retour à la liste des utilisateurs</a></p>

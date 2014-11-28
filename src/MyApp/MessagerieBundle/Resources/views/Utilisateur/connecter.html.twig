@@ -1,0 +1,13 @@
+<h1>Se connecter</h1>
+
+<form action="" method="post" {{ form_enctype(form)}}>
+	{{ form_widget(form) }}
+	<input type="submit"/>
+</form>
+
+{% if message %}
+<p>{{ message }}</p>
+	{% if user != 0 %}
+	<a href="{{ path('my_app_messagerie_envoyer', { 'id': user }) }}">Envoyer un message</a>
+	{% endif %}
+{% endif %}

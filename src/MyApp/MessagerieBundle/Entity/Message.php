@@ -26,6 +26,11 @@ class Message
      */    
     private $contenu;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="MyApp\MessagerieBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */    
+    private $user;
 
     /**
      * Get id
@@ -81,5 +86,28 @@ class Message
     public function getContenu()
     {
         return $this->contenu;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \MyApp\MessagerieBundle\Entity\User $user
+     * @return Message
+     */
+    public function setUser(\MyApp\MessagerieBundle\Entity\User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \MyApp\MessagerieBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

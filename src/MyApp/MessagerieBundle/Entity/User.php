@@ -19,18 +19,6 @@ class User
      * @ORM\Column(type="string",length=255)
      * @Assert\NotBlank()
      */    
-    private $nom;
-    
-    /**
-     * @ORM\Column(type="string",length=255)
-     * @Assert\NotBlank()
-     */    
-    private $prenom;
-    
-    /**
-     * @ORM\Column(type="string",length=255)
-     * @Assert\NotBlank()
-     */    
     private $mail;
     
     /**
@@ -48,12 +36,6 @@ class User
      * @ORM\Column(type="integer",length=255)
      */    
     private $nbFilleuil;
-    
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Message")
-     */    
-    private $message;
 
     /**
      * @ORM\ManyToMany(targetEntity="Fichier")
@@ -69,6 +51,8 @@ class User
      */
     public function __construct()
     {
+        $this->tailleMaxFichier = 0;
+        $this->nbFilleuil = 0;
         $this->fichier = new \Doctrine\Common\Collections\ArrayCollection();
         $this->destinataireInconnu = new \Doctrine\Common\Collections\ArrayCollection();
     }

@@ -1,3 +1,15 @@
-my_app_messagerie_homepage:
-    path:     /he/
-    defaults: { _controller: MyAppMessagerieBundle:Default:index }
+my_app_messagerie_index:
+    path: /
+    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:index }
+
+my_app_messagerie_ajouter:
+    path: /ajouter/
+    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:ajouter }
+
+my_app_messagerie_envoyer:
+    path: /envoyer/{id}
+    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:envoyer }
+
+my_app_messagerie_connecter:
+    path: /connecter/
+    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:connecter }

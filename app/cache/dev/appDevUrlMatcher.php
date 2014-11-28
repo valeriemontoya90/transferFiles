@@ -122,13 +122,39 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
         }
 
-        // my_app_messagerie_homepage
-        if (rtrim($pathinfo, '/') === '/myapp/he') {
-            if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'my_app_messagerie_homepage');
+        if (0 === strpos($pathinfo, '/myapp')) {
+            // my_app_messagerie_index
+            if (rtrim($pathinfo, '/') === '/myapp') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'my_app_messagerie_index');
+                }
+
+                return array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::indexAction',  '_route' => 'my_app_messagerie_index',);
             }
 
-            return array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\DefaultController::indexAction',  '_route' => 'my_app_messagerie_homepage',);
+            // my_app_messagerie_ajouter
+            if (rtrim($pathinfo, '/') === '/myapp/ajouter') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'my_app_messagerie_ajouter');
+                }
+
+                return array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::ajouterAction',  '_route' => 'my_app_messagerie_ajouter',);
+            }
+
+            // my_app_messagerie_envoyer
+            if (0 === strpos($pathinfo, '/myapp/envoyer') && preg_match('#^/myapp/envoyer/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'my_app_messagerie_envoyer')), array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::envoyerAction',));
+            }
+
+            // my_app_messagerie_connecter
+            if (rtrim($pathinfo, '/') === '/myapp/connecter') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'my_app_messagerie_connecter');
+                }
+
+                return array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::connecterAction',  '_route' => 'my_app_messagerie_connecter',);
+            }
+
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
