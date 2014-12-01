@@ -97,12 +97,13 @@ class UtilisateurController extends Controller
 
     public function envoyerAction($id = null) {
     	$information = '';
-
+        $destinataire_mail = "";
         $message = new Message();
         
         $em = $this->container->get('doctrine')->getEntityManager();
         $user = $em->getRepository('MyAppMessagerieBundle:User')->findOneBy(array('id' => $id));
         //var_dump($user);
+        $expediteur_mail = $user->getMail();
 
         $form = $this->container
         	->get('form.factory')
@@ -123,8 +124,8 @@ class UtilisateurController extends Controller
         		//var_dump($destinataire);
         		//var_dump($message->getDestinataire());
         		$destinataire_obj = $em->getRepository('MyAppMessagerieBundle:User')->findOneBy(array('mail' => $destinataire));
-        		$destinataire_mail = "";
         		
+
         		//Si l'utilisateur est un membre
         		if ($destinataire_obj != null) {
         			$destinataire_mail = $destinataire_obj->getMail();
@@ -182,12 +183,12 @@ class UtilisateurController extends Controller
                 
                 $headers  = 'MIME-Version: 1.0' . "\r\n";
                 $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $headers .= 'To: vanille <valeriemontoya90@gmail.com>' . "\r\n";
-                $headers .= 'From: valeriemontoya90 <valeriemontoya90@gmail.com>' . "\r\n";
+                $headers .= 'To: '. $destinataire_mail . "\r\n";
+                $headers .= 'From: '. $expediteur_mail . "\r\n";
                 //$headers .= 'Cc: anniversaire_archive@example.com' . "\r\n";
                 //$headers .= 'Bcc: anniversaire_verif@example.com' . "\r\n";
 
-                $to = "valeriemontoya90@gmail.com";
+                $to = $destinataire_mail;
                 $subject = $message->getObjet();
                 $message = $message->getContenu();
 
