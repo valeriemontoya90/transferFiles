@@ -141,18 +141,25 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::ajouterAction',  '_route' => 'my_app_messagerie_ajouter',);
             }
 
-            // my_app_messagerie_connecter
-            if (rtrim($pathinfo, '/') === '/myapp/connecter') {
-                if (substr($pathinfo, -1) !== '/') {
-                    return $this->redirect($pathinfo.'/', 'my_app_messagerie_connecter');
+            if (0 === strpos($pathinfo, '/myapp/connecter')) {
+                // my_app_messagerie_connecter
+                if (rtrim($pathinfo, '/') === '/myapp/connecter') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'my_app_messagerie_connecter');
+                    }
+
+                    return array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::connecterAction',  '_route' => 'my_app_messagerie_connecter',);
                 }
 
-                return array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::connecterAction',  '_route' => 'my_app_messagerie_connecter',);
-            }
+                // my_app_messagerie_envoyer
+                if (preg_match('#^/myapp/connecter/(?P<id>[^/]++)/envoyer/?$#s', $pathinfo, $matches)) {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'my_app_messagerie_envoyer');
+                    }
 
-            // my_app_messagerie_envoyer
-            if (0 === strpos($pathinfo, '/myapp/envoyer') && preg_match('#^/myapp/envoyer/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'my_app_messagerie_envoyer')), array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::envoyerAction',));
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'my_app_messagerie_envoyer')), array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::envoyerAction',));
+                }
+
             }
 
             if (0 === strpos($pathinfo, '/myapp/lister')) {

@@ -115,6 +115,7 @@ class UtilisateurController extends Controller
         	$form->bind($request);
 
         	if ($form->isValid()) {
+
         		$message->setExpediteur($user);
         		$em = $this->container->get('doctrine')->getEntityManager();
 
@@ -155,7 +156,7 @@ class UtilisateurController extends Controller
         		//Enregistrement d'une éventuelle pièce jointe
         		//var_dump($message->getFichier());
         		$fichier_obj = $message->getFichier();
-        		var_dump($message->getFichier()->getSize());
+        		//var_dump($message->getFichier()->getSize());
         		$file = new Fichier();
         		$file->setNom($message->getFichier()->getClientOriginalName());
         		$file->setPoids($message->getFichier()->getSize());
@@ -168,10 +169,34 @@ class UtilisateurController extends Controller
         		$file_id = $em->getRepository('MyAppMessagerieBundle:Fichier')->findOneBy(array('nom' => $message->getFichier()->getClientOriginalName()));
 				$message->setFichier($file_id->getId());
 
+                $message->setFichierNom($file_id->getNom());
+
         		//Enregistrement du message
         		$em->persist($message);
         		$em->flush();
-        		$information = "Message envoyé avec succès !";		
+
+                // Envoi du mail
+
+                // En-têtes additionnels
+                // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+                
+                $headers  = 'MIME-Version: 1.0' . "\r\n";
+                $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                $headers .= 'To: vanille <valeriemontoya90@gmail.com>' . "\r\n";
+                $headers .= 'From: valeriemontoya90 <valeriemontoya90@gmail.com>' . "\r\n";
+                //$headers .= 'Cc: anniversaire_archive@example.com' . "\r\n";
+                //$headers .= 'Bcc: anniversaire_verif@example.com' . "\r\n";
+
+                $to = "valeriemontoya90@gmail.com";
+                $subject = $message->getObjet();
+                $message = $message->getContenu();
+
+                // Envoi
+                mail($to, $subject, $message, $headers);
+                
+                //Fin envoi du mail
+
+        		$information = "Message envoyé avec succès !";	
         	}
         }
 

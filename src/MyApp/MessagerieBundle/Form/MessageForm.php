@@ -4,6 +4,7 @@ namespace MyApp\MessagerieBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use MyApp\MessagerieBundle\Entity\Fichier;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MessageForm extends AbstractType {
@@ -11,8 +12,10 @@ class MessageForm extends AbstractType {
         $builder
             ->add("destinataire", 'text', array('required' => true))
             ->add("objet", 'text', array('required' => true))
-            ->add("contenu", 'text', array('required' => true))
-            ->add('fichier', 'file')
+            ->add("contenu", 'textarea', array('required' => true))
+            //->add('fichier', new FichierForm())
+            ->add('fichier', 'file', array(
+                'data_class' => 'MyApp\MessagerieBundle\Entity\Fichier',))
         ;
     }
 

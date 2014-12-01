@@ -11,7 +11,7 @@ my_app_messagerie_connecter:
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:connecter }
 
 my_app_messagerie_envoyer:
-    path: /envoyer/{id}
+    path: /connecter/{id}/envoyer/
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:envoyer }
 
 my_app_messagerie_listerenvoyes:

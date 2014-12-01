@@ -44,9 +44,14 @@ class Message
     private $destinataireInconnu;
 
     /**
-     * @ORM\Column(type="integer",length=255)
-     */    
+     * @ORM\Column(type="string",length=255)
+     */
     private $fichier;
+
+    /**
+     * @ORM\Column(type="string",length=255)
+     */    
+    private $fichierNom;
 
     /**
      * Get id
@@ -224,5 +229,51 @@ class Message
     public function getFichier()
     {
         return $this->fichier;
+    }
+
+    /**
+     * Add fichier
+     *
+     * @param \MyApp\MessagerieBundle\Entity\Fichier $fichier
+     * @return Message
+     */
+    public function addFichier(\MyApp\MessagerieBundle\Entity\Fichier $fichier)
+    {
+        $this->fichier[] = $fichier;
+
+        return $this;
+    }
+
+    /**
+     * Remove fichier
+     *
+     * @param \MyApp\MessagerieBundle\Entity\Fichier $fichier
+     */
+    public function removeFichier(\MyApp\MessagerieBundle\Entity\Fichier $fichier)
+    {
+        $this->fichier->removeElement($fichier);
+    }
+
+    /**
+     * Set fichierNom
+     *
+     * @param string $fichierNom
+     * @return Message
+     */
+    public function setFichierNom($fichierNom)
+    {
+        $this->fichierNom = $fichierNom;
+
+        return $this;
+    }
+
+    /**
+     * Get fichierNom
+     *
+     * @return string 
+     */
+    public function getFichierNom()
+    {
+        return $this->fichierNom;
     }
 }

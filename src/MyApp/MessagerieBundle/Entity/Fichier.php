@@ -46,10 +46,40 @@ class Fichier
     
     /**
      * @ORM\Column(type="integer",length=255)
-     */    
+     */
     private $nbDeTelechargement;
 
+    //Pour télécharger un fichier
+    
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    /*
+    public $path;
 
+    public function getAbsolutePath()
+    {
+        return null === $this->path ? null : $this->getUploadRootDir().'/'.$this->path;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->path ? null : $this->getUploadDir().'/'.$this->path;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
+        // le document/image dans la vue.
+        return 'uploads/documents';
+    }
+*/
     /**
      * Get id
      *
@@ -196,5 +226,28 @@ class Fichier
     public function getMimeType()
     {
         return $this->mimeType;
+    }
+
+    /**
+     * Set message
+     *
+     * @param \MyApp\MessagerieBundle\Entity\Message $message
+     * @return Fichier
+     */
+    public function setMessage(\MyApp\MessagerieBundle\Entity\Message $message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get message
+     *
+     * @return \MyApp\MessagerieBundle\Entity\Message 
+     */
+    public function getMessage()
+    {
+        return $this->message;
     }
 }

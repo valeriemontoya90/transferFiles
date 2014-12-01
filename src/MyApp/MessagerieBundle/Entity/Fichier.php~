@@ -46,9 +46,8 @@ class Fichier
     
     /**
      * @ORM\Column(type="integer",length=255)
-     */    
+     */
     private $nbDeTelechargement;
-
 
     /**
      * Get id
@@ -196,5 +195,28 @@ class Fichier
     public function getMimeType()
     {
         return $this->mimeType;
+    }
+
+    /**
+     * Set message
+     *
+     * @param \MyApp\MessagerieBundle\Entity\Message $message
+     * @return Fichier
+     */
+    public function setMessage(\MyApp\MessagerieBundle\Entity\Message $message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get message
+     *
+     * @return \MyApp\MessagerieBundle\Entity\Message 
+     */
+    public function getMessage()
+    {
+        return $this->message;
     }
 }
