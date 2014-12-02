@@ -5,12 +5,12 @@
 		{{ env.objet }}<br>
 		{{ env.contenu }}<br>
 		{{ env.destinataire }}<br>
-		{{ env.fichierNom }}
-	</p>
+		<a href={{ path('my_app_messagerie_download', { 'id': id, 'path' : env.path }) }}>CV</a><br>
 {% else %}
 	<p>0 messages envoyés.</p>
 {% endfor %}
-
+<br>
+<br>
 <a href="{{ path('my_app_messagerie_envoyer', { 'id': id }) }}">Envoyer un message</a><br>
 <a href="{{ path('my_app_messagerie_listerenvoyes', { 'id': id }) }}">Liste des messages envoyés</a><br>
 <a href="{{ path('my_app_messagerie_listerrecus', { 'id': id }) }}">Liste des messages reçus</a>

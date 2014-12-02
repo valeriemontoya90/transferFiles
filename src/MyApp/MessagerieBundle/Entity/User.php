@@ -38,11 +38,6 @@ class User
     private $nbFilleuil;
 
     /**
-     * @ORM\Column(type="boolean")
-     */    
-    private $estInconnu;
-
-    /**
      * @ORM\ManyToMany(targetEntity="Fichier")
      */    
     private $fichier;

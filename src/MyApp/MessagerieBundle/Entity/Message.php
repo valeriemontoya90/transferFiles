@@ -5,6 +5,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Message 
 {
@@ -44,14 +45,17 @@ class Message
     private $destinataireInconnu;
 
     /**
-     * @ORM\Column(type="string",length=255)
+     * @Assert\File(maxSize="6000000")
      */
-    private $fichier;
+    public $file;
 
+    //Pour télécharger un fichier
+    
     /**
-     * @ORM\Column(type="string",length=255)
-     */    
-    private $fichierNom;
+     * @ORM\Column(type="string", length=255)
+     */
+
+    public $path;
 
     /**
      * Get id
@@ -209,71 +213,90 @@ class Message
     }
 
     /**
-     * Set fichier
+     * Set path
      *
-     * @param string $fichier
+     * @param string $path
      * @return Message
      */
-    public function setFichier($fichier)
+    public function setPath($path)
     {
-        $this->fichier = $fichier;
+        $this->path = $path;
 
         return $this;
     }
 
     /**
-     * Get fichier
+     * Get path
      *
      * @return string 
      */
-    public function getFichier()
+    public function getPath()
     {
-        return $this->fichier;
+        return $this->path;
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->path ? null : $this->getUploadRootDir().'/'.$this->path;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->path ? null : $this->getUploadDir().'/'.$this->path;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
+        return __DIR__.'/../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
+        // le document/image dans la vue.
+        return 'uploads/documents';
     }
 
     /**
-     * Add fichier
-     *
-     * @param \MyApp\MessagerieBundle\Entity\Fichier $fichier
-     * @return Message
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
      */
-    public function addFichier(\MyApp\MessagerieBundle\Entity\Fichier $fichier)
+    public function preUpload()
     {
-        $this->fichier[] = $fichier;
-
-        return $this;
+        if (null !== $this->file) {
+            // faites ce que vous voulez pour générer un nom unique
+            //$this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
+            $this->path = $this->file->guessExtension();
+        }
     }
 
     /**
-     * Remove fichier
-     *
-     * @param \MyApp\MessagerieBundle\Entity\Fichier $fichier
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
      */
-    public function removeFichier(\MyApp\MessagerieBundle\Entity\Fichier $fichier)
+    public function upload()
     {
-        $this->fichier->removeElement($fichier);
+        if (null === $this->file) {
+            return;
+        }
+
+        // s'il y a une erreur lors du déplacement du fichier, une exception
+        // va automatiquement être lancée par la méthode move(). Cela va empêcher
+        // proprement l'entité d'être persistée dans la base de données si
+        // erreur il y a
+        $this->file->move($this->getUploadRootDir(), $this->path);
+
+        unset($this->file);
     }
 
     /**
-     * Set fichierNom
-     *
-     * @param string $fichierNom
-     * @return Message
+     * @ORM\PostRemove()
      */
-    public function setFichierNom($fichierNom)
+    public function removeUpload()
     {
-        $this->fichierNom = $fichierNom;
-
-        return $this;
-    }
-
-    /**
-     * Get fichierNom
-     *
-     * @return string 
-     */
-    public function getFichierNom()
-    {
-        return $this->fichierNom;
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
+        }
     }
 }

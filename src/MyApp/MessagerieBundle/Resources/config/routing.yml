@@ -1,23 +1,27 @@
 my_app_messagerie_index:
-    path: /
+    path: /user/
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:index }
 
 my_app_messagerie_ajouter:
-    path: /ajouter/
+    path: /user/ajouter/
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:ajouter }
 
 my_app_messagerie_connecter:
-    path: /connecter/
+    path: /user/connecter/
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:connecter }
 
 my_app_messagerie_envoyer:
-    path: /connecter/{id}/envoyer/
+    path: /user/{id}/envoyer/
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:envoyer }
 
 my_app_messagerie_listerenvoyes:
-    path: /listerenvoyes/{id}
+    path: /user/{id}/listerenvoyes/
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:listermessagesenvoyes }
 
 my_app_messagerie_listerrecus:
-    path: /listerrecus/{id}
+    path: /user/{id}/listerrecus/
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:listermessagesrecus }
+
+my_app_messagerie_download:
+    path: /user/{id}/listerenvoyes/download/{path}/
+    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:download }

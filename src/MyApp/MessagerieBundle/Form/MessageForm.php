@@ -13,9 +13,10 @@ class MessageForm extends AbstractType {
             ->add("destinataire", 'text', array('required' => true))
             ->add("objet", 'text', array('required' => true))
             ->add("contenu", 'textarea', array('required' => true))
+            ->add("file")
             //->add('fichier', new FichierForm())
-            ->add('fichier', 'file', array(
-                'data_class' => 'MyApp\MessagerieBundle\Entity\Fichier',))
+            //->add('fichier', 'file', array(
+               // 'data_class' => 'MyApp\MessagerieBundle\Entity\Fichier',))
         ;
     }
 

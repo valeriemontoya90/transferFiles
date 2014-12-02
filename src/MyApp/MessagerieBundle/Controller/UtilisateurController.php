@@ -12,6 +12,8 @@ use MyApp\MessagerieBundle\Form\UserForm;
 use MyApp\MessagerieBundle\Form\MessageForm;
 use MyApp\MessagerieBundle\Form\ConnexionForm;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Response; 
+//use Symfony\Component\BrowserKit\Response;
 
 class UtilisateurController extends Controller
 {
@@ -116,9 +118,9 @@ class UtilisateurController extends Controller
         	$form->bind($request);
 
         	if ($form->isValid()) {
-
+                
         		$message->setExpediteur($user);
-        		$em = $this->container->get('doctrine')->getEntityManager();
+        		//$em = $this->container->get('doctrine')->getEntityManager();
 
         		$destinataire = $message->getDestinataire();
         		//var_dump($destinataire);
@@ -156,7 +158,7 @@ class UtilisateurController extends Controller
 
         		//Enregistrement d'une éventuelle pièce jointe
         		//var_dump($message->getFichier());
-        		$fichier_obj = $message->getFichier();
+        		/*$fichier_obj = $message->getFichier();
         		//var_dump($message->getFichier()->getSize());
         		$file = new Fichier();
         		$file->setNom($message->getFichier()->getClientOriginalName());
@@ -165,14 +167,19 @@ class UtilisateurController extends Controller
         		$file->setMotDePasse("");
         		$file->setPerennite("");
         		$file->setNbDeTelechargement("");
+                
+                $file->upload();
+                var_dump($file);
+
         		$em->persist($file);
         		$em->flush();
         		$file_id = $em->getRepository('MyAppMessagerieBundle:Fichier')->findOneBy(array('nom' => $message->getFichier()->getClientOriginalName()));
 				$message->setFichier($file_id->getId());
 
-                $message->setFichierNom($file_id->getNom());
+                $message->setFichierNom($file_id->getNom());*/
 
         		//Enregistrement du message
+                //$message->upload();
         		$em->persist($message);
         		$em->flush();
 
@@ -191,8 +198,6 @@ class UtilisateurController extends Controller
                 $to = $destinataire_mail;
                 $subject = $message->getObjet();
                 $message = $message->getContenu();
-
-                // Envoi
                 mail($to, $subject, $message, $headers);
                 
                 //Fin envoi du mail
@@ -214,7 +219,7 @@ class UtilisateurController extends Controller
 		//var_dump($envoyes);
 
 		return $this->container->get('templating')->renderResponse('MyAppMessagerieBundle:Utilisateur:listerenvoyes.html.twig',
-		array('envoyes' => $envoyes, 'id' => $id)
+		array('envoyes' => $envoyes, 'id' => $id, 'test' => 'MainActivity.java')
 		);
 	}
 
@@ -231,4 +236,13 @@ class UtilisateurController extends Controller
 		array('messages' => $messages, 'id' => $id)
 		);
 	}
+
+    public function downloadAction($id, $path){
+        $response = new Response();
+        $response->headers->set('Content-type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', 'filename="'. $path);
+        //$response->send() Pas besoin apparemment;
+        //var_dump($response);
+        return $response;
+    }
 }
