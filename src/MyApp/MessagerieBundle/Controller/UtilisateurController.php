@@ -219,7 +219,7 @@ class UtilisateurController extends Controller
 		//var_dump($envoyes);
 
 		return $this->container->get('templating')->renderResponse('MyAppMessagerieBundle:Utilisateur:listerenvoyes.html.twig',
-		array('envoyes' => $envoyes, 'id' => $id, 'test' => 'MainActivity.java')
+		array('envoyes' => $envoyes, 'id' => $id)
 		);
 	}
 
