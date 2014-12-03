@@ -25,3 +25,7 @@ my_app_messagerie_listerrecus:
 my_app_messagerie_download:
     path: /user/{id}/listerenvoyes/download/{path}/
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:download }
+
+my_app_messagerie_detailsmessages:
+    path: /user/{id}/listerrecus/detail/{message}/
+    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:detailsmessages }

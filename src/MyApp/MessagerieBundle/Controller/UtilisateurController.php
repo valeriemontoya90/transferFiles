@@ -19,15 +19,7 @@ class UtilisateurController extends Controller
 {
 	
 	public function indexAction() {
-		$em = $this->container->get('doctrine')->getEntityManager();
-
-		$users = $em->getRepository('MyAppMessagerieBundle:User')->findAll();
-
-		$message = 'Users créés avec succès';
-
-		return $this->container->get('templating')->renderResponse('MyAppMessagerieBundle:Utilisateur:index.html.twig',
-		array('users' => $users, 'message' => $message)
-		);
+		return $this->container->get('templating')->renderResponse('MyAppMessagerieBundle:Utilisateur:index.html.twig');
 	}
 
     public function ajouterAction() {
@@ -132,7 +124,7 @@ class UtilisateurController extends Controller
         		if ($destinataire_obj != null) {
         			$destinataire_mail = $destinataire_obj->getMail();
         			//var_dump($destinataire_id);
-        			$message->setDestinataire($destinataire_mail);
+        			//$message->setDestinataire($destinataire_mail);
         			$message->setDestinataireInconnu(false);
         			$information = "destinataire connu";
         		} else {
@@ -144,44 +136,44 @@ class UtilisateurController extends Controller
         			//var_dump($destinataire_autres);
         			if ($destinataire_autres != null) {
         				$destinataire_mail = $destinataire_autres->getMail();
-        				$message->setDestinataire($destinataire_mail);
+        				//$message->setDestinataire($destinataire_mail);
         			} else {
         				//Si on ne le retrouve pas on l'enregistre dans la table "destinataire inconnu"
 						$destinaireInconnu = new DestinataireInconnu();
 						$destinaireInconnu->setMail($destinataire);
-        				$message->setDestinataire($destinataire_mail);
-        				$em->persist($message);
+        				//$message->setDestinataire($destinataire_mail);
+        				//$em->persist($message);
 						$em->persist($destinaireInconnu);
-						$em->flush();
+						//$em->flush();
         			}
         		}
 
+                $message->setDestinataire($destinataire_mail);
         		//Enregistrement d'une éventuelle pièce jointe
         		//var_dump($message->getFichier());
-        		/*$fichier_obj = $message->getFichier();
+        		//$fichier_obj = $message->getFichier();
         		//var_dump($message->getFichier()->getSize());
         		$file = new Fichier();
-        		$file->setNom($message->getFichier()->getClientOriginalName());
-        		$file->setPoids($message->getFichier()->getSize());
-        		$file->setMimeType($message->getFichier()->getMimeType());
+        		$file->setNom($message->getFile()->getClientOriginalName());
+        		$file->setPoids($message->getFile()->getSize());
+        		$file->setMimeType($message->getFile()->getMimeType());
         		$file->setMotDePasse("");
         		$file->setPerennite("");
         		$file->setNbDeTelechargement("");
-                
-                $file->upload();
-                var_dump($file);
+        		//$file_id = $em->getRepository('MyAppMessagerieBundle:Fichier')->findOneBy(array('nom' => $message->getFichier()->getClientOriginalName()));
+				//$message->setFichier($file_id->getId());
+                //$message->setFichierNom($file_id->getNom());
 
-        		$em->persist($file);
-        		$em->flush();
-        		$file_id = $em->getRepository('MyAppMessagerieBundle:Fichier')->findOneBy(array('nom' => $message->getFichier()->getClientOriginalName()));
-				$message->setFichier($file_id->getId());
-
-                $message->setFichierNom($file_id->getNom());*/
 
         		//Enregistrement du message
-                //$message->upload();
+                //$message->upload(); Pas besoin
         		$em->persist($message);
         		$em->flush();
+
+                $file->setMessageId($message->getId());
+                //var_dump($file);
+                $em->persist($file);
+                $em->flush();
 
                 // Envoi du mail
 
@@ -197,7 +189,7 @@ class UtilisateurController extends Controller
 
                 $to = $destinataire_mail;
                 $subject = $message->getObjet();
-                $message = $message->getContenu();
+                $message = "";
                 mail($to, $subject, $message, $headers);
                 
                 //Fin envoi du mail
@@ -208,7 +200,7 @@ class UtilisateurController extends Controller
 
         return $this->container->get('templating')
         	->renderResponse('MyAppMessagerieBundle:Utilisateur:message.html.twig',
-        		array ('form' => $form->createView(), 'message' => $information)
+        		array ('form' => $form->createView(), 'message' => $information, 'id' => $id)
         	);
     }
 
@@ -231,7 +223,7 @@ class UtilisateurController extends Controller
 
 		$messages = $em->getRepository('MyAppMessagerieBundle:Message')->findBy(array('destinataire' => $user->getMail()));
 		//var_dump($messages->getExpediteur()->getMail());
-
+        //var_dump($messages);
 		return $this->container->get('templating')->renderResponse('MyAppMessagerieBundle:Utilisateur:listerrecus.html.twig',
 		array('messages' => $messages, 'id' => $id)
 		);
@@ -239,10 +231,21 @@ class UtilisateurController extends Controller
 
     public function downloadAction($id, $path){
         $response = new Response();
+        //$ok = "style.css";
         $response->headers->set('Content-type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'filename="'. $path);
         //$response->send() Pas besoin apparemment;
         //var_dump($response);
         return $response;
+    }
+
+    public function detailsmessagesAction($id, $message){
+        $em = $this->container->get('doctrine')->getEntityManager();
+        $detail = $em->getRepository('MyAppMessagerieBundle:Message')->findBy(array('id' => $message));
+        //var_dump($messages->getExpediteur()->getMail());
+        //var_dump($detail);
+        return $this->container->get('templating')->renderResponse('MyAppMessagerieBundle:Utilisateur:detailsmessage.html.twig',
+        array('message' => $detail, 'id' => $id)
+        );
     }
 }

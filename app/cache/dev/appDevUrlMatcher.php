@@ -186,6 +186,15 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'my_app_messagerie_download')), array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::downloadAction',));
             }
 
+            // my_app_messagerie_detailsmessages
+            if (preg_match('#^/myapp/user/(?P<id>[^/]++)/listerrecus/detail/(?P<message>[^/]++)/?$#s', $pathinfo, $matches)) {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'my_app_messagerie_detailsmessages');
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'my_app_messagerie_detailsmessages')), array (  '_controller' => 'MyApp\\MessagerieBundle\\Controller\\UtilisateurController::detailsmessagesAction',));
+            }
+
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

@@ -2,10 +2,13 @@
 
 {% for env in envoyes %}
 	<p>
-		{{ env.objet }}<br>
-		{{ env.contenu }}<br>
+		<a style="text-decoration:none; color:black;" href="{{ path('my_app_messagerie_detailsmessages', { 'id': id, 'message' : env.id }) }}">
+		Vous avez envoyé un fichier à<br>
 		{{ env.destinataire }}<br>
-		<a href={{ path('my_app_messagerie_download', { 'id': id, 'path' : env.path }) }}>CV</a><br>
+		{{ env.path }}<br>
+		{{ env.objet }}<br>
+		</a>
+	</p>
 {% else %}
 	<p>0 messages envoyés.</p>
 {% endfor %}

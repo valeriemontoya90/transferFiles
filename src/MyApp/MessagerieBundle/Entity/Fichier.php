@@ -50,41 +50,10 @@ class Fichier
     private $nbDeTelechargement;
 
     /**
-     * @Assert\File(maxSize="6000000")
+     * @ORM\Column(type="integer",length=255)
      */
-    public $file;
-
-    //Pour télécharger un fichier
+    private $messageId;
     
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-
-    public $path;
-
-    public function getAbsolutePath()
-    {
-        return null === $this->path ? null : $this->getUploadRootDir().'/'.$this->path;
-    }
-
-    public function getWebPath()
-    {
-        return null === $this->path ? null : $this->getUploadDir().'/'.$this->path;
-    }
-
-    protected function getUploadRootDir()
-    {
-        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
-    }
-
-    protected function getUploadDir()
-    {
-        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
-        // le document/image dans la vue.
-        return 'uploads/documents';
-    }
-
     /**
      * Get id
      *
@@ -234,93 +203,25 @@ class Fichier
     }
 
     /**
-     * Set message
+     * Set messageId
      *
-     * @param \MyApp\MessagerieBundle\Entity\Message $message
+     * @param integer $messageId
      * @return Fichier
      */
-    public function setMessage(\MyApp\MessagerieBundle\Entity\Message $message)
+    public function setMessageId($messageId)
     {
-        $this->message = $message;
+        $this->messageId = $messageId;
 
         return $this;
     }
 
     /**
-     * Get message
+     * Get messageId
      *
-     * @return \MyApp\MessagerieBundle\Entity\Message 
+     * @return integer 
      */
-    public function getMessage()
+    public function getMessageId()
     {
-        return $this->message;
-    }
-
-    /**
-     * Set path
-     *
-     * @param string $path
-     * @return Fichier
-     */
-    public function setPath($path)
-    {
-        $this->path = $path;
-
-        return $this;
-    }
-
-    /**
-     * Get path
-     *
-     * @return string 
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * Set file
-     *
-     * @param \file $file
-     * @return Fichier
-     */
-    public function setFile(\file $file)
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    /**
-     * Get file
-     *
-     * @return \file 
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    public function upload() {
-        // la propriété « file » peut être vide si le champ n'est pas requis
-        if (null === $this->file) {
-            return;
-        }
-
-        // utilisez le nom de fichier original ici mais
-        // vous devriez « l'assainir » pour au moins éviter
-        // quelconques problèmes de sécurité
-
-        // la méthode « move » prend comme arguments le répertoire cible et
-        // le nom de fichier cible où le fichier doit être déplacé
-        $this->file->move($this->getUploadRootDir(), $this->file->getClientOriginalName());
-
-        // définit la propriété « path » comme étant le nom de fichier où vous
-        // avez stocké le fichier
-        $this->path = $this->file->getClientOriginalName();
-        var_dump($this->path);
-        // « nettoie » la propriété « file » comme vous n'en aurez plus besoin
-        $this->file = null;
+        return $this->messageId;
     }
 }

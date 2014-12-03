@@ -8,5 +8,8 @@
 	{{ form_widget(form) }}
 	<input type="submit" value="Upload Document"/>
 </form>
-
-<p><a href="{{ path('my_app_messagerie_index') }}">Retour à la liste des utilisateurs</a></p>
+<br>
+<br>
+<a href="{{ path('my_app_messagerie_envoyer', { 'id': id }) }}">Envoyer un message</a><br>
+<a href="{{ path('my_app_messagerie_listerenvoyes', { 'id': id }) }}">Liste des messages envoyés</a><br>
+<a href="{{ path('my_app_messagerie_listerrecus', { 'id': id }) }}">Liste des messages reçus</a>

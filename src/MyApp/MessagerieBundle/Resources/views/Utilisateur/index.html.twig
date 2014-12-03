@@ -1,10 +1,2 @@
-<h1>Liste des utilisateurs</h1>
-
-{% for u in users %}
-	<p>{{ u. mail }}</p>
-{% else %}
-	<p>Aucun utilisateur n'a été trouvé.</p>
-{% endfor %}
-
 <p><a href="{{ path('my_app_messagerie_ajouter') }}">S'inscrire</a></p>
 <p><a href="{{ path('my_app_messagerie_connecter') }}">Se connecter</a></p>

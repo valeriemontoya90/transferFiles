@@ -5,8 +5,7 @@
 	<input type="submit"/>
 </form>
 
-{% if message %}
-<p>{{ message }}</p>
+{% if message == "Utilisateur connu" %}
 	{% if user != 0 %}
 	<a href="{{ path('my_app_messagerie_envoyer', { 'id': user }) }}">Envoyer un message</a><br>
 	<a href="{{ path('my_app_messagerie_listerenvoyes', { 'id': user }) }}">Liste des messages envoyés</a><br>

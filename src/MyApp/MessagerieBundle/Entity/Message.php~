@@ -25,7 +25,7 @@ class Message
     /**
      * @ORM\Column(type="text")
      */    
-    private $contenu;
+    private $motdePasse;
 
     /**
      * @ORM\ManyToOne(targetEntity="MyApp\MessagerieBundle\Entity\User")
@@ -48,8 +48,6 @@ class Message
      * @Assert\File(maxSize="6000000")
      */
     public $file;
-
-    //Pour télécharger un fichier
     
     /**
      * @ORM\Column(type="string", length=255)
@@ -88,29 +86,6 @@ class Message
     public function getObjet()
     {
         return $this->objet;
-    }
-
-    /**
-     * Set contenu
-     *
-     * @param string $contenu
-     * @return Message
-     */
-    public function setContenu($contenu)
-    {
-        $this->contenu = $contenu;
-
-        return $this;
-    }
-
-    /**
-     * Get contenu
-     *
-     * @return string 
-     */
-    public function getContenu()
-    {
-        return $this->contenu;
     }
 
     /**
@@ -186,6 +161,7 @@ class Message
      */
     public function __construct()
     {
+        $this->motDePasse = "OKKK";
         $this->destinataire = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -210,6 +186,29 @@ class Message
     public function removeDestinataire(\MyApp\MessagerieBundle\Entity\User $destinataire)
     {
         $this->destinataire->removeElement($destinataire);
+    }
+
+    /**
+     * Set file
+     *
+     * @param $file
+     * @return Message
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return string 
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 
     /**
@@ -266,7 +265,8 @@ class Message
     {
         if (null !== $this->file) {
             // faites ce que vous voulez pour générer un nom unique
-            $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
+            //$this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
+            $this->path = $this->file->guessExtension();
         }
     }
 
@@ -297,5 +297,28 @@ class Message
         if ($file = $this->getAbsolutePath()) {
             unlink($file);
         }
+    }
+
+    /**
+     * Set motdePasse
+     *
+     * @param string $motdePasse
+     * @return Message
+     */
+    public function setMotdePasse($motdePasse)
+    {
+        $this->motdePasse = $motdePasse;
+
+        return $this;
+    }
+
+    /**
+     * Get motdePasse
+     *
+     * @return string 
+     */
+    public function getMotdePasse()
+    {
+        return $this->motdePasse;
     }
 }

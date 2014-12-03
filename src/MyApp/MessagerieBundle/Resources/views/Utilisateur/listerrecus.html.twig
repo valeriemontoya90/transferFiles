@@ -1,11 +1,13 @@
 <h1>Liste des messages reçus</h1>
 
 {% for msg in messages %}
+<a href="{{ path('my_app_messagerie_detailsmessages', { 'id': id, 'message' : msg.id }) }}">
 	<p>
 		{{ msg.objet }}<br>
-		{{ msg.contenu }}<br>
-		{{ msg.expediteur.mail }}
+		{{ msg.expediteur.mail }}<br>
+		<a href={{ path('my_app_messagerie_download', { 'id': id, 'path' : msg.path }) }}>{{ msg.path }}</a><br>
 	</p>
+</a>
 {% else %}
 	<p>0 messages reçus.</p>
 {% endfor %}
