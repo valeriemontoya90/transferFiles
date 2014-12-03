@@ -1,0 +1,15 @@
+<h1>Vous avez envoyé un fichier</h1>
+
+{% for msg in message %}
+<p>
+	A {{ msg.destinataire }}<br>
+	De {{ msg.expediteur.mail }}<br>
+	<a href={{ path('my_app_messagerie_download', { 'id': id, 'path' : msg.path }) }}>{{ msg.path }}</a><br>
+	{{ msg.objet }}<br>
+</p>
+{% endfor %}
+<br>
+<br>
+<a href="{{ path('my_app_messagerie_envoyer', { 'id': id }) }}">Envoyer un message</a><br>
+<a href="{{ path('my_app_messagerie_listerenvoyes', { 'id': id }) }}">Liste des messages envoyés</a><br>
+<a href="{{ path('my_app_messagerie_listerrecus', { 'id': id }) }}">Liste des messages reçus</a>
