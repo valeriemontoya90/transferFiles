@@ -2,6 +2,7 @@
 namespace MyApp\MessagerieBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity
@@ -244,13 +245,13 @@ class Message
         return null === $this->path ? null : $this->getUploadDir().'/'.$this->path;
     }
 
-    protected function getUploadRootDir()
+    public function getUploadRootDir()
     {
         // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
         return __DIR__.'/../../../web/'.$this->getUploadDir();
     }
 
-    protected function getUploadDir()
+    public function getUploadDir()
     {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
@@ -265,8 +266,8 @@ class Message
     {
         if (null !== $this->file) {
             // faites ce que vous voulez pour générer un nom unique
-            //$this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
-            $this->path = $this->file->guessExtension();
+            $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
+            //$this->path = $this->file->guessExtension();
         }
     }
 

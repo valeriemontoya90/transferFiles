@@ -1,10 +1,14 @@
-<h1>Vous avez envoyé un fichier</h1>
+DetailsMessage
+{% include "::stylesheets.html.twig" %}
+<br>
+
+<h1 id="header">Vous avez envoyé un fichier</h1>
 
 {% for msg in message %}
 <p>
 	A {{ msg.destinataire }}<br>
 	De {{ msg.expediteur.mail }}<br>
-	<a href={{ path('my_app_messagerie_download', { 'id': id, 'path' : msg.path }) }}>{{ msg.path }}</a><br>
+	<a href={{ path('my_app_messagerie_download', { 'id': id, 'messageId' : msg.id }) }}>{{ msg.path }}</a><br>
 	{{ msg.objet }}<br>
 </p>
 {% endfor %}

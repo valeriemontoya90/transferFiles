@@ -91,9 +91,8 @@ class UtilisateurController extends Controller
 
     public function envoyerAction($id = null) {
     	$information = '';
-        $destinataire_mail = "";
         $message = new Message();
-        
+        $destinataire = "";
         $em = $this->container->get('doctrine')->getEntityManager();
         $user = $em->getRepository('MyAppMessagerieBundle:User')->findOneBy(array('id' => $id));
         //var_dump($user);
@@ -112,19 +111,13 @@ class UtilisateurController extends Controller
         	if ($form->isValid()) {
                 
         		$message->setExpediteur($user);
-        		//$em = $this->container->get('doctrine')->getEntityManager();
 
         		$destinataire = $message->getDestinataire();
-        		//var_dump($destinataire);
-        		//var_dump($message->getDestinataire());
         		$destinataire_obj = $em->getRepository('MyAppMessagerieBundle:User')->findOneBy(array('mail' => $destinataire));
         		
 
         		//Si l'utilisateur est un membre
         		if ($destinataire_obj != null) {
-        			$destinataire_mail = $destinataire_obj->getMail();
-        			//var_dump($destinataire_id);
-        			//$message->setDestinataire($destinataire_mail);
         			$message->setDestinataireInconnu(false);
         			$information = "destinataire connu";
         		} else {
@@ -135,23 +128,17 @@ class UtilisateurController extends Controller
         			$destinataire_autres = $em->getRepository('MyAppMessagerieBundle:DestinataireInconnu')->findOneBy(array('mail' => $destinataire));
         			//var_dump($destinataire_autres);
         			if ($destinataire_autres != null) {
-        				$destinataire_mail = $destinataire_autres->getMail();
-        				//$message->setDestinataire($destinataire_mail);
+                        ;
         			} else {
         				//Si on ne le retrouve pas on l'enregistre dans la table "destinataire inconnu"
 						$destinaireInconnu = new DestinataireInconnu();
 						$destinaireInconnu->setMail($destinataire);
-        				//$message->setDestinataire($destinataire_mail);
-        				//$em->persist($message);
 						$em->persist($destinaireInconnu);
-						//$em->flush();
         			}
         		}
 
-                $message->setDestinataire($destinataire_mail);
         		//Enregistrement d'une éventuelle pièce jointe
         		//var_dump($message->getFichier());
-        		//$fichier_obj = $message->getFichier();
         		//var_dump($message->getFichier()->getSize());
         		$file = new Fichier();
         		$file->setNom($message->getFile()->getClientOriginalName());
@@ -160,10 +147,6 @@ class UtilisateurController extends Controller
         		$file->setMotDePasse("");
         		$file->setPerennite("");
         		$file->setNbDeTelechargement("");
-        		//$file_id = $em->getRepository('MyAppMessagerieBundle:Fichier')->findOneBy(array('nom' => $message->getFichier()->getClientOriginalName()));
-				//$message->setFichier($file_id->getId());
-                //$message->setFichierNom($file_id->getNom());
-
 
         		//Enregistrement du message
                 //$message->upload(); Pas besoin
@@ -182,12 +165,12 @@ class UtilisateurController extends Controller
                 
                 $headers  = 'MIME-Version: 1.0' . "\r\n";
                 $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $headers .= 'To: '. $destinataire_mail . "\r\n";
+                $headers .= 'To: '. $destinataire . "\r\n";
                 $headers .= 'From: '. $expediteur_mail . "\r\n";
                 //$headers .= 'Cc: anniversaire_archive@example.com' . "\r\n";
                 //$headers .= 'Bcc: anniversaire_verif@example.com' . "\r\n";
 
-                $to = $destinataire_mail;
+                $to = $destinataire;
                 $subject = $message->getObjet();
                 $message = "";
                 mail($to, $subject, $message, $headers);
@@ -229,13 +212,21 @@ class UtilisateurController extends Controller
 		);
 	}
 
-    public function downloadAction($id, $path){
+    public function downloadAction($id, $messageId){
         $response = new Response();
         //$ok = "style.css";
+        $em = $this->container->get('doctrine')->getEntityManager();
+        $msg = $em->getRepository('MyAppMessagerieBundle:Message')->findOneBy(array('id' => $messageId));
+        $fichier = $em->getRepository('MyAppMessagerieBundle:Fichier')->findOneBy(array('messageId' => $messageId));
+        
+        $response->headers->set('Content-Description', 'File Transfer');
         $response->headers->set('Content-type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'filename="'. $path);
+        $response->headers->set('Content-Disposition', 'filename="'. $fichier->getNom());
         //$response->send() Pas besoin apparemment;
         //var_dump($response);
+        //$response->setContent("Hello ! je ne suis pas le vrai content héhé! ");
+        $filename = $msg->getUploadRootDir()."/".$msg->getPath();
+        $response->setContent(file_get_contents($filename, true));
         return $response;
     }
 
