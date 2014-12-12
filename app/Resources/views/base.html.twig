@@ -5,6 +5,9 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        DetailsMessage
+        {% include "::stylesheets2.html.twig" %}
+<br>
     </head>
     <body>
         {% block body %}{% endblock %}

@@ -20,11 +20,19 @@ class Message
     /**
      * @ORM\Column(type="string",length=255)
      * @Assert\NotBlank()
-     */    
+     */
     private $objet;
+
+    /**
+     * @ORM\Column(type="string",length=255)
+     * @Assert\NotBlank()
+     */
+    private $corps;
     
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min = "3")
+     * @Assert\Null()
      */    
     private $motdePasse;
 
@@ -162,7 +170,6 @@ class Message
      */
     public function __construct()
     {
-        $this->motDePasse = "OKKK";
         $this->destinataire = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -321,5 +328,28 @@ class Message
     public function getMotdePasse()
     {
         return $this->motdePasse;
+    }
+
+    /**
+     * Set corps
+     *
+     * @param string $corps
+     * @return Message
+     */
+    public function setCorps($corps)
+    {
+        $this->corps = $corps;
+
+        return $this;
+    }
+
+    /**
+     * Get corps
+     *
+     * @return string 
+     */
+    public function getCorps()
+    {
+        return $this->corps;
     }
 }

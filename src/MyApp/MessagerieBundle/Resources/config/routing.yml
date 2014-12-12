@@ -29,3 +29,7 @@ my_app_messagerie_download:
 my_app_messagerie_detailsmessages:
     path: /user/{id}/listerrecus/detail/{message}/
     defaults: { _controller: MyAppMessagerieBundle:Utilisateur:detailsmessages }
+
+my_app_messagerie_parrainer:
+    path: /user/{id}/parrainer/
+    defaults: { _controller: MyAppMessagerieBundle:Utilisateur:parrainer }

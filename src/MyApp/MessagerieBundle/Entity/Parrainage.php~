@@ -1,0 +1,47 @@
+<?php
+namespace MyApp\MessagerieBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+/**
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
+ */
+class Parrainage {
+    /**
+     * @ORM\GeneratedValue
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    
+    /**
+     * @ORM\Column(type="string",length=255)
+     * @Assert\NotBlank()
+     */
+    private $objet;
+
+    /**
+     * @ORM\Column(type="string",length=255)
+     * @Assert\NotBlank()
+     */
+    private $corps;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="MyApp\MessagerieBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $expediteur;
+
+    /**
+     * @ORM\Column(type="string",length=255)
+     * @Assert\NotBlank()
+     */
+    private $destinataire;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */    
+    private $destinataireInconnu;
+}

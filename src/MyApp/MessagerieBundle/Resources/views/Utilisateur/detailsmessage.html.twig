@@ -1,7 +1,3 @@
-DetailsMessage
-{% include "::stylesheets.html.twig" %}
-<br>
-
 <h1 id="header">Vous avez envoyé un fichier</h1>
 
 {% for msg in message %}
@@ -16,4 +12,5 @@ DetailsMessage
 <br>
 <a href="{{ path('my_app_messagerie_envoyer', { 'id': id }) }}">Envoyer un message</a><br>
 <a href="{{ path('my_app_messagerie_listerenvoyes', { 'id': id }) }}">Liste des messages envoyés</a><br>
-<a href="{{ path('my_app_messagerie_listerrecus', { 'id': id }) }}">Liste des messages reçus</a>
+<a href="{{ path('my_app_messagerie_listerrecus', { 'id': id }) }}">Liste des messages reçus</a><br>
+<a href="{{ path('my_app_messagerie_parrainer', { 'id': id }) }}">Parrainer un ami</a>

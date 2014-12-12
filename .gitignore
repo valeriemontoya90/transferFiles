@@ -1,4 +1,12 @@
 app/cache
 app/logs
 app/config/parameters.yml
+src/web
 *.~
+src/MyApp/MessagerieBundle/Resources/.sass-cache/
+src/MyApp/MessagerieBundle/Resources/ProjectCompass/
+src/MyApp/MessagerieBundle/Resources/assets/
+web/bundles/framework
+web/bundles/my_app_messagerie/
+web/bundles/sensiodistribution
+web/css/

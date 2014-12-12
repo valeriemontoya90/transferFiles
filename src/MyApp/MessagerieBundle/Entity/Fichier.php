@@ -249,49 +249,4 @@ class Fichier
     {
         return $this->path;
     }
-
-    /**
-     * Set file
-     *
-     * @param \file $file
-     * @return Fichier
-     */
-    public function setFile(\file $file)
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    /**
-     * Get file
-     *
-     * @return \file 
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    public function upload() {
-        // la propriété « file » peut être vide si le champ n'est pas requis
-        if (null === $this->file) {
-            return;
-        }
-
-        // utilisez le nom de fichier original ici mais
-        // vous devriez « l'assainir » pour au moins éviter
-        // quelconques problèmes de sécurité
-
-        // la méthode « move » prend comme arguments le répertoire cible et
-        // le nom de fichier cible où le fichier doit être déplacé
-        $this->file->move($this->getUploadRootDir(), $this->file->getClientOriginalName());
-
-        // définit la propriété « path » comme étant le nom de fichier où vous
-        // avez stocké le fichier
-        $this->path = $this->file->getClientOriginalName();
-        var_dump($this->path);
-        // « nettoie » la propriété « file » comme vous n'en aurez plus besoin
-        $this->file = null;
-    }
 }

@@ -2,6 +2,7 @@
 namespace MyApp\MessagerieBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity
@@ -19,11 +20,19 @@ class Message
     /**
      * @ORM\Column(type="string",length=255)
      * @Assert\NotBlank()
-     */    
+     */
     private $objet;
+
+    /**
+     * @ORM\Column(type="string",length=255)
+     * @Assert\NotBlank()
+     */
+    private $corps;
     
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min = "3")
+     * @Assert\Null()
      */    
     private $motdePasse;
 
@@ -161,7 +170,6 @@ class Message
      */
     public function __construct()
     {
-        $this->motDePasse = "OKKK";
         $this->destinataire = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -244,13 +252,13 @@ class Message
         return null === $this->path ? null : $this->getUploadDir().'/'.$this->path;
     }
 
-    protected function getUploadRootDir()
+    public function getUploadRootDir()
     {
         // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
         return __DIR__.'/../../../web/'.$this->getUploadDir();
     }
 
-    protected function getUploadDir()
+    public function getUploadDir()
     {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
@@ -265,8 +273,8 @@ class Message
     {
         if (null !== $this->file) {
             // faites ce que vous voulez pour générer un nom unique
-            //$this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
-            $this->path = $this->file->guessExtension();
+            $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
+            //$this->path = $this->file->guessExtension();
         }
     }
 
@@ -320,5 +328,28 @@ class Message
     public function getMotdePasse()
     {
         return $this->motdePasse;
+    }
+
+    /**
+     * Set corps
+     *
+     * @param string $corps
+     * @return Message
+     */
+    public function setCorps($corps)
+    {
+        $this->corps = $corps;
+
+        return $this;
+    }
+
+    /**
+     * Get corps
+     *
+     * @return string 
+     */
+    public function getCorps()
+    {
+        return $this->corps;
     }
 }

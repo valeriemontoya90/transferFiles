@@ -224,4 +224,29 @@ class Fichier
     {
         return $this->messageId;
     }
+
+
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     * @return Fichier
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
 }
